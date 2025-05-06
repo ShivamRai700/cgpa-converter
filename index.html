@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CGPA to Percentage Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: popin 0.4s ease;
+    }
+
+    @keyframes popin {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      background: rgba(255,255,255,0.8);
+      color: #333;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(to right, #ff6a00, #ee0979);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .result.visible {
+      opacity: 1;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>CGPA to Percentage Converter</h1>
+    <p>Convert your CGPA to percentage based on your Indian university.</p>
+
+    <select id="university">
+      <option value="">-- Select University --</option>
+      <option value="mumbai">Mumbai University</option>
+      <option value="vtu">VTU (Visvesvaraya Technological University)</option>
+      <option value="ipu">IPU (Indraprastha University)</option>
+      <option value="jntu">JNTU (Jawaharlal Nehru Technological University)</option>
+      <option value="aktu">AKTU (Dr. APJ Abdul Kalam Technical University)</option>
+      <option value="anna">Anna University</option>
+      <option value="sppu">Pune University (SPPU)</option>
+      <option value="du">Delhi University (DU)</option>
+      <option value="bhu">Banaras Hindu University (BHU)</option>
+      <option value="iitbombay">IIT Bombay</option>
+      <option value="iitr">IIT Roorkee</option>
+      <option value="iisc">IISc (Indian Institute of Science)</option>
+    </select>
+
+    <input type="number" id="cgpa" step="0.01" placeholder="Enter your CGPA (e.g., 8.5)" />
+
+    <button onclick="convert()">Convert</button>
+
+    <div class="result" id="result"></div>
+    
+    <footer>Made with 💙 by You | For Students Everywhere</footer>
+  </div>
+
+  <script>
+    function convert() {
+      const uni = document.getElementById("university").value;
+      const cgpa = parseFloat(document.getElementById("cgpa").value);
+      const resultDiv = document.getElementById("result");
+
+      // Validate input
+      if (!uni || isNaN(cgpa)) {
+        resultDiv.textContent = "Please select a university and enter a valid CGPA.";
+        resultDiv.style.color = "#ff4444";
+        resultDiv.classList.add("visible");
+        return;
+      }
+
+      let percentage;
+
+      // Formula for CGPA to percentage conversion
+      const formula = {
+        "mumbai": (cgpa) => (cgpa - 0.75) * 10,
+        "vtu": (cgpa) => cgpa * 9.5,
+        "ipu": (cgpa) => cgpa * 9.5,
+        "jntu": (cgpa) => (cgpa - 0.5) * 10,
+        "aktu": (cgpa) => cgpa * 10,
+        "anna": (cgpa) => cgpa * 10,
+        "sppu": (cgpa) => cgpa * 10,
+        "du": (cgpa) => cgpa * 9.5,
+        "bhu": (cgpa) => cgpa * 9.5,
+        "iitbombay": (cgpa) => cgpa * 10,
+        "iitr": (cgpa) => cgpa * 10,
+        "iisc": (cgpa) => cgpa * 10
+      };
+
+      if (formula[uni]) {
+        percentage = formula[uni](cgpa);
+        resultDiv.textContent = `Your percentage is approximately: ${percentage.toFixed(2)}%`;
+        resultDiv.style.color = "#00ff9c";
+      } else {
+        resultDiv.textContent = "Invalid university or conversion formula missing.";
+        resultDiv.style.color = "#ff4444";
+      }
+      resultDiv.classList.add("visible");
+    }
+  </script>
+</body>
+</html>
